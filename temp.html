@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Ticket Booking</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container" id="page1">
+    <h1>Select a Movie</h1>
+    <div class="movies" id="movies-list"></div>
+    <button onclick="goToPage2()">Proceed to Booking</button>
+  </div>
+
+  <div class="container" id="page2" style="display:none;">
+    <h1>Book Your Seats</h1>
+    <div id="seating"></div>
+    <div>Total Amount: ₹<span id="amount">0</span></div>
+    <button onclick="goToPage3()">Proceed to Payment</button>
+  </div>
+
+  <div class="container" id="page3" style="display:none;">
+    <h1>Make Payment</h1>
+    <img src="qr.png" alt="Scan to Pay" class="qr">
+    <p>Scan the QR to pay</p>
+    <button onclick="goToPage4()">Payment Done</button>
+  </div>
+
+  <div class="container" id="page4" style="display:none;">
+    <h1>Booking Confirmation</h1>
+    <div id="confirmation"></div>
+  </div>
+
+  <script>
+    const movies = [
+      { title: "Avengers", desc: "Action packed superhero movie", price: 150 },
+      { title: "Inception", desc: "Mind-bending thriller", price: 180 },
+      { title: "3 Idiots", desc: "Comedy drama", price: 120 },
+    ];
+
+    let selectedMovie = null;
+    let selectedSeats = [];
+
+    function renderMovies() {
+      const container = document.getElementById('movies-list');
+      movies.forEach((movie, index) => {
+        const card = document.createElement('div');
+        card.className = 'movie-card';
+        card.innerHTML = `<h2>${movie.title}</h2><p>${movie.desc}</p><p>₹${movie.price}</p><button onclick="selectMovie(${index})">Select</button>`;
+        container.appendChild(card);
+      });
+    }
+
+    function selectMovie(index) {
+      selectedMovie = movies[index];
+      alert(`${selectedMovie.title} selected!`);
+    }
+
+    function goToPage2() {
+      if (!selectedMovie) return alert('Please select a movie first!');
+      document.getElementById('page1').style.display = 'none';
+      document.getElementById('page2').style.display = 'block';
+      renderSeats();
+    }
+
+    function renderSeats() {
+      const container = document.getElementById('seating');
+      container.innerHTML = '';
+      for (let i = 1; i <= 20; i++) {
+        const seat = document.createElement('div');
+        seat.className = 'seat';
+        seat.textContent = i;
+        seat.onclick = () => toggleSeat(i);
+        container.appendChild(seat);
+      }
+    }
+
+    function toggleSeat(seatNum) {
+      const index = selectedSeats.indexOf(seatNum);
+      if (index > -1) selectedSeats.splice(index, 1);
+      else selectedSeats.push(seatNum);
+      document.querySelectorAll('.seat').forEach((s, i) => {
+        s.classList.toggle('selected', selectedSeats.includes(i + 1));
+      });
+      document.getElementById('amount').textContent = selectedSeats.length * selectedMovie.price;
+    }
+
+    function goToPage3() {
+      if (selectedSeats.length === 0) return alert('Select at least one seat!');
+      document.getElementById('page2').style.display = 'none';
+      document.getElementById('page3').style.display = 'block';
+    }
+
+    function goToPage4() {
+      document.getElementById('page3').style.display = 'none';
+      document.getElementById('page4').style.display = 'block';
+      document.getElementById('confirmation').innerHTML = `
+        <h3>Movie: ${selectedMovie.title}</h3>
+        <p>Seats: ${selectedSeats.join(', ')}</p>
+        <p>Total Paid: ₹${selectedSeats.length * selectedMovie.price}</p>
+      `;
+    }
+
+    renderMovies();
+  </script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      margin-top: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .movie-card {
+      background: #e8e8e8;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+    }
+    .seat {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      margin: 5px;
+      background: #ccc;
+      text-align: center;
+      line-height: 30px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .seat.selected {
+      background: green;
+      color: white;
+    }
+    .qr {
+      width: 200px;
+      height: auto;
+      display: block;
+      margin: auto;
+    }
+  </style>
+</body>
+</html>

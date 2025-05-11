@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="booking.css">
+</head>
+<body>
+        <div class="booking-page" id="booking-page">
+            <div class="booking-details">
+                <h2 id="stitle">Movie Title</h2>
+                <p id="sdate">Date: </p>
+                <p id="stime">Time: </p>
+                <p id="sprice">Price per ticket: ₹</p>
+                <label for="seat-count">Number of Seats:</label>
+                <input type="number" id="seat-count" min="1" value="1">
+                <p id="total-price">Total: ₹</p>
+                <!-- <button class="btn" onclick="confirmBooking()" >Pay Now!</button> -->
+                <button class="btn back-btn" onclick="goBack()">Back to Movies</button>
+                <a href="payment.html" onclick="confirmBooking()" class="btn" style="padding: 8px 25px; 
+    background-color: #f08e0e;
+    border: none;
+    color: #faf7f7;
+    border-radius: 5px;
+    cursor: pointer;">Pay Now!</a>
+            </div>
+        </div>
+    </div>
+
+   
+<script>
+
+window.onload = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const movieId = urlParams.get('id');  
+
+    if (movieId) {
+        const selectedMovie = JSON.parse(localStorage.getItem(movieId));
+        if (selectedMovie) {
+            document.getElementById("stitle").textContent = selectedMovie.title;
+            document.getElementById("sdate").textContent = `Date: ${selectedMovie.date}`;
+            document.getElementById("stime").textContent = `Time: ${selectedMovie.time}`;
+            document.getElementById("sprice").textContent = `Price per ticket: ₹${selectedMovie.price}`;
+
+            const seatInput = document.getElementById("seat-count");
+            const totalPrice = document.getElementById("total-price");
+
+            const updateTotal = () => {
+                const count = parseInt(seatInput.value) || 1;
+                totalPrice.textContent = `Total: ₹${selectedMovie.price * count}`;
+            };
+
+            seatInput.addEventListener("input", updateTotal);
+            updateTotal();
+        } else {
+            alert("Movie data not found.");
+        }
+    } else {
+        alert("No movie selected.");
+    }
+};
+
+function confirmBooking() {
+    alert("🎉 Make Payment!");
+}
+
+function goBack() {
+    window.location.href = "movie.html";
+}
+
+</script>
+
+
+</body>
+</html>
