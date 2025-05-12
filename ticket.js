@@ -21,5 +21,5 @@ window.onload = () => {
 };
 
 function goBack() {
-  window.location.href = "movie.html"; // Go back to movie selection page
+  window.location.href = "index.html"; 
 }
