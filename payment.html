@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Scan & Pay</title>
+  <link rel="stylesheet" href="payment.css" />
+</head>
+<body>
+  <div class="qr-container">
+    <h2>Confirm Your Booking</h2>
+
+    <div class="booking-info">
+      <p><strong>Movie:</strong> <span id="movie-title"></span></p>
+      <p><strong>Date:</strong> <span id="movie-date"></span></p>
+      <p><strong>Time:</strong> <span id="movie-time"></span></p>
+      <p><strong>Tickets:</strong> <span id="seat-count"></span></p>
+      <p><strong>Price per Ticket:</strong> ₹<span id="price-per-ticket"></span></p>
+      <p><strong>Total Amount:</strong> ₹<span id="total-amount"></span></p>
+    </div>
+
+    <p>Please scan the QR code below to make your payment:</p>
+    <img src="yashikaqr1.jpg" alt="QR Code for Payment" class="qr-image" />
+
+    <p class="note">After payment, click below to proceed.</p>
+    <button class="btn" onclick="showTicket()" style="padding: 8px 25px; background-color: #f08e0e; border: none; color: #faf7f7; border-radius: 5px; cursor: pointer;">I've Paid – Show Ticket</button>
+  </div>
+
+  <script>
+    window.onload = () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const movieId = urlParams.get('id');
+      const seatCount = urlParams.get('seats');
+
+      if (movieId && seatCount) {
+        const movie = JSON.parse(localStorage.getItem(movieId));
+        if (movie) {
+          document.getElementById('movie-title').textContent = movie.title;
+          document.getElementById('movie-date').textContent = movie.date;
+          document.getElementById('movie-time').textContent = movie.time;
+          document.getElementById('seat-count').textContent = seatCount;
+          document.getElementById('price-per-ticket').textContent = movie.price;
+          document.getElementById('total-amount').textContent = movie.price * seatCount;
+        } else {
+          alert("Movie details not found!");
+        }
+      } else {
+        alert("Missing booking data.");
+      }
+    };
+
+    
+    function showTicket() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const movieId = urlParams.get('id');
+      const seatCount = document.getElementById('seat-count').textContent;  // Grab seat count from the span element
+
+      if (movieId && seatCount > 0) {
+        window.location.href = `ticket.html?id=${movieId}&seats=${seatCount}`;
+      } else {
+        alert("Please select a valid number of seats.");
+      }
+    }
+    function goBack() {
+      window.location.href = "movie.html";
+    }
+  </script>
+
+</body>
+</html>

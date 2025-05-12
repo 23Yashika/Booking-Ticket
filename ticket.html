@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Ticket</title>
+  <link rel="stylesheet" href="ticket.css" />
+</head>
+<body>
+  <div class="ticket-container">
+    <div class="ticket-details">
+      <h2>Booking Confirmed</h2>
+
+      <p id="confirmation-message">🎉 Your booking is confirmed! 🎉</p>
+
+      <div class="booking-info">
+        <p><strong>Movie Title:</strong> <span id="movie-title"></span></p>
+        <p><strong>Date:</strong> <span id="movie-date"></span></p>
+        <p><strong>Time:</strong> <span id="movie-time"></span></p>
+        <p><strong>Seats:</strong> <span id="seat-count"></span></p>
+        <p><strong>Price per Ticket:</strong> ₹<span id="price-per-ticket"></span></p>
+        <p><strong>Total Amount:</strong> ₹<span id="total-amount"></span></p>
+      </div>
+
+      <div class="qr-container">
+        <h3>Your Payment QR Code</h3>
+        <img src="yashikaqr1.jpg" alt="QR Code" class="qr-image" />
+      </div>
+
+      <button class="btn" onclick="goBack()">Back to Movie Selection</button>
+    </div>
+  </div>
+
+  <script src="ticket.js"></script>
+</body>
+</html>
